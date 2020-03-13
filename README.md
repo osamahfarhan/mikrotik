@@ -1,0 +1,2 @@
+# mikrotik
+useful mikrotik functions 
