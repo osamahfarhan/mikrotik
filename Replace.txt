@@ -1,0 +1,44 @@
+:global Replace do={
+:local v1 $1;
+:local v2 [:toarray $2];
+:local v3 [:toarray $3];
+:local v4 [:tonum $4];
+:local len1 [:len $v1];
+:local len2 [:len $v2];
+:local len3 [:len $v3];
+:local v2r $v2;
+:local v3r $v3;
+:local neer  -1;
+:local last  -1;
+:local where -1;
+:local output;
+:local t [:typeof $v1];
+:local n 0;
+:if ([:len $v4]=0) do={:set $v4 $len1;}
+:while ($n<=$v4) do={
+ :set $neer $len1;
+ :foreach v in=$v2 do={
+  :set $where [:find $v1 $v ($last-1)];
+  :if ([:len $where]>0) do={
+    :if ($where<$neer) do={
+    :set $neer $where;
+    :set $v2r $v;
+    }
+   }
+  }
+ :if ($len3>1) do={
+  :set $v3r [:pick $v3 [:find $v2 $v2r]];
+ }
+ :if ($t="array") do={
+  :if (($neer>=$len1)||($n=$v4)) do={:return ($output,[:pick $v1 $last $len1]);}
+  :set $output ($output,[:pick $v1 $last $neer],$v3r);
+  :set $last ($neer+1);
+  } else={
+  :if (($neer>=$len1)||($n=$v4)) do={:return ($output.[:pick $v1 $last $len1]);}
+  :set $output ($output.[:pick $v1 $last $neer].$v3r);
+  :set $last ($neer+[:len $v2r]);
+ }
+ :set $n ($n+1);
+ }
+:return $output;
+}
