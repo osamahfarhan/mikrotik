@@ -1,0 +1,21 @@
+:global Array2Str do={
+:global Array2Str;
+:if ([:typeof $1]="str") do={:return ("\"$1\"");}
+:if ([:len $1]=0) do={:return ("\"\"");}
+:local str "";
+:local a false;
+:foreach n,v in=$1 do={
+ :set $a "";
+ :if ([:typeof $n]!="num") do={:set $str ($str."{"."\"".$n."\""."=");:set $a ("}");}
+   :if ([:typeof $v]="array") do={
+     :set $str ($str.[$Array2Str $v ].$a.",");
+	 } else={
+	 :if ([:typeof $v]="str") do={
+		:set $str ($str."\"".$v."\"".$a.",");
+		} else={
+		:set $str ($str.$v.$a.",");
+		}
+	}
+}
+:return ("(".[:pick $str 0 ([:len $str ]-1)].")");
+}

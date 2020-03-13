@@ -1,0 +1,13 @@
+:global Sec2Date do={
+:local y ($1/(31557600));
+:local d (($1%(31557600))/86400);
+:local time [:totime ($1%(86400))];
+:local k 1;
+:if (($y%4)>0) do={:set $k 0;};
+:if ($d=0) do={:return ("dec/31/$($y-1)",$time);};
+:local mn [:find ((($d>=1)and($d<=31)),(($d>31)and($d<=(59+$k))),(($d>(59+$k))and($d<=(90+$k))),(($d>(90+$k))and($d<=(120+$k))),(($d>(120+$k))and($d<=(151+$k))),(($d>(151+$k))and($d<=(181+$k))),(($d>(181+$k))and($d<=(212+$k))),(($d>(212+$k))and($d<=(243+$k))),(($d>(243+$k))and($d<=(273+$k))),(($d>(273+$k))and($d<=(304+$k))),(($d>(304+$k))and($d<=(334+$k))),(($d>(334+$k))and($d<=(365+$k)))) true];
+:local mo [:pick ("jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec","dec") $mn ];
+:local da ($d-([:pick (0,31,(59+$k),(90+$k),(120+$k),(151+$k),(181+$k),(212+$k),(243+$k),(273+$k),(304+$k),(334+$k)) $mn]));
+:if ($da<10) do={:return (($mo."/".0.$da."/".$y),$time);}
+:return (($mo."/".$da."/".$y),$time);
+}

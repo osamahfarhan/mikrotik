@@ -1,0 +1,17 @@
+#---------------------------------------------------------------
+#Convert Date and time ex="jan/23/2020" 22:44:21  To Seconds then return to date and time 
+#---------------------------------------------------------------
+:local date [/system clock get date ];
+:local time [/system clock get time ];
+:local seconds [$Date2Sec $date $time];
+#show seconds 
+:put $seconds;
+#return secounds to date and time 
+:local das [$Sec2Date $seconds];
+:local date2 [:pick $das 0];
+:local time2 [:pick $das 1];
+#show date
+:put $date2;
+#show time
+:put $time2;
+#---------------------------------------------------------------

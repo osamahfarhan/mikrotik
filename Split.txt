@@ -1,0 +1,14 @@
+:global Split do={
+:local o;
+:local L [:len $2];
+:local j 0;
+:local i (0-$L);
+:local n 0;
+:if ($L=0) do={:set $n 1;}
+:while ([:set $i [:find $1 $2 ($i+$L-1+$n)];(any$i)]) do={
+:set $o ($o,([:pick $1 $j $i]));
+:set $j ($i+$L);
+:if ([:len $o]=$3) do={:return ($o,([:pick $1 $j [:len $1]]));}
+}
+:return ($o,([:pick $1 $j [:len $1]]));
+}

@@ -1,0 +1,7 @@
+:global map do={
+:local o [:toarray ""];
+:foreach n,v in=$1 do={
+:set ($o->$n) [$2 n=$n v=$v];
+}
+:return $o;
+}

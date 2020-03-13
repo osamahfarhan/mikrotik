@@ -1,0 +1,13 @@
+:global Date2Sec do={
+:local y [:pick $1 7 11];
+:local m [:pick $1 0 3];
+:local d [:pick $1 4 6];
+:local h [:pick $2 0 2];
+:local n [:pick $2 3 5];
+:local s [:pick $2 6 8];
+:local k 1;
+:if (($y%4)>0) do={:set $k 0;}
+:local mn [:find ("jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec") $m];
+:local ds [:pick (0,31,(59+$k),(90+$k),(120+$k),(151+$k),(181+$k),(212+$k),(243+$k),(273+$k),(304+$k),(334+$k)) $mn ];
+:return (($y*365*24*60*60)+(($ds+$d)*86400)+($h*3600)+($n*60)+$s+($y*3600*6));
+}

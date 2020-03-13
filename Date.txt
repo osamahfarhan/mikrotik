@@ -1,0 +1,4 @@
+:global Date do={
+:if (any$2) do={:set $2 ":";}
+:return ([:pick $1 7 11]."$2".[:pick [("01","02","03","04","05","06","07","08","09","10","11","12")] [:find [("jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec")] [:pick $1 0 3]]]."$2".[:pick $1 4 6]);
+}

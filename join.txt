@@ -1,0 +1,7 @@
+:global Join do={
+:local o;
+:foreach i in=$1 do={
+:set $o ($o.$i.$2);
+}
+:return [:pick $o 0 ([:len $o ]-[:len $2])];
+}
