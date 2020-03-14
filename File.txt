@@ -1,0 +1,19 @@
+#------------------------------------------------------------------------------
+#Creat any directory name and any file extension 
+#------------------------------------------------------------------------------
+#example create new path "folder1/folder2/folder3/osama.html";
+:global File do={
+:local S do={:local o;:local L [:len $2];:local j 0;:local i (0-$L);:if ($L=0) do={:return $1;};:while ([:set $i [:find $1 $2 ($i+$L-1)];(any$i)]) do={:set $o ($o,([:pick $1 $j $i]));:set $j ($i+$L);};:return ($o,([:pick $1 $j [:len $1]]));}
+:local a [$S $1 "/"];
+:local n [:pick $a ([:len $a ]-1)];
+:local d "";
+:local x "";
+/ip smb shares remove [find where comment="temp"];
+/ip smb shares {:foreach i,f in=[:pick $a 0 ([:len $a ]-1)] do={:set $d ($d."/".$f);[add name="$d" directory=$d comment="temp"];:delay 10ms;}}
+:set $d [:pick $d 1 [:len $d]];
+:delay 10ms;
+/tool sniffer {:set $x [get file-name];[set file-name=($d."/".$n)];[quick duration=00:00:00.001 ip-address=3.3.3.3 ];[set file-name=$x]}
+/ip smb shares remove [find where comment="temp"];
+}
+$File "folder1/folder2/folder3/osama.html"
+#------------------------------------------------------------------------------

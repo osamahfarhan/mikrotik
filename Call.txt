@@ -1,0 +1,40 @@
+#------------------------------------------------------------------------------
+#Call global Varable without define 
+#------------------------------------------------------------------------------
+:global test1 ("test1",4123,10.0.0.1);
+:global test2 34234;
+:global test3 do={:return ($1+$2);};
+#Call global Varable without define
+:local code do={
+:local get do={:local a [:parse ":global \"$1\";:return \$\"$1\";"];:return [$a];}
+:local t1 [$get "test1"];
+:put $t1;
+:local t2 [$get "test2"];
+:put $t2;
+#Call global Code without define ":global test3;" in code
+:local t3 [$get "test3"];
+:put [$t3 2 4];
+:put [$t3 10 5];
+};[$code]
+#or
+{
+:local F do={:local a [:parse ":global \"$1\";:return \$\"$1\";"];:local b [$a];:return [$b $1 $2 $3];}
+:put [$F "my_global_Function_name" "v1" "v2" "v3"];
+}
+#------------------------------------------------------------------------------
+#Call Code From File With Cache;
+#------------------------------------------------------------------------------
+#save any code in file mycode.txt; 
+#example save this :put "hellow";:return ($1+$2*$3); 
+:global Func do={
+:global F;
+:do {:if (!any($F->"$f")) do={:if ([:len $F]=0) do={:set $F [:toarray ""];};:set ($F->"$f") [:parse [/file get "$f" contents]];}} on-error={:log error "error when call Func not found file=$f";:error "not found $f";}
+:local a ($F->"$f");
+:return [$a $1 $2 $3];
+}
+#:put [$Func f="Function file name"  v1  v2  v3];
+#first time only the script will get code from files and execute it 
+:put [$Func f="mycode.txt"  1  4  5];
+#then it will get code from memory "global F"
+:put [$Func f="mycode.txt"  9  7  10];
+#------------------------------------------------------------------------------
