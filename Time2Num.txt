@@ -1,0 +1,15 @@
+################################################################################
+#Convert Time ex="3w1d10:10:32"  To Seconds 
+:global Time2Num do={
+:local T [:totime $1 ];
+:local W 0;
+:local D 0;
+:local S 1;
+:local A 0;
+:if ([:pick $T 0]="-") do={:set $A 1;:set S (0-1) ;}
+:if ($T~"w") do={:set $W [:pick $T $A  [:find $T "w"]]} 
+:if ($T~"d") do={:set $D [:pick $T ([:find $T "d"]-1)]}
+:local m  [:find $T ":"]; 
+:local ta [:pick $T ($m-2) ($m+6)];
+:return ((($W*7+$D)*24*60*60+[:tonum [:pick $ta 0 2]]*60*60+[:tonum [:pick $ta 3 5]]*60+[:tonum [:pick $ta 6 8]])*$S)
+}

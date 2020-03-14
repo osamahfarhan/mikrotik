@@ -1,0 +1,14 @@
+################################################################################
+#Convert Array Value To json
+:global Json do={
+:local i [:len $1];:local j 0;
+:local q "\"";:local a false;
+:foreach n,v in=$1 do={:set $j ($j+1);
+:if ([:typeof $n]!="num") do={:set $s ($s.$q.$n.$q.":");:set $a true;}
+:if ([:typeof $v]="num") do={:if ($i=$j) do={:set $s ($s.$v);} else={:set $s ($s.$v.",");}} else={
+:if ([:typeof $v]!="array") do={:if ($i=$j) do={:set $s  ($s.$q.$v.$q)} else={:set $s ($s.$q.$v.$q.",");}} else={ 
+:if ($i=$j) do={:set $s ($s.[$Json $v])} else={:set $s ($s.[$Json $v].",");}
+}}}
+:if ($a) do={:return ("{".$s."}");}
+:return ("[".$s."]");
+}
