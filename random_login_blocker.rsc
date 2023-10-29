@@ -9,7 +9,7 @@ add action=jump chain=TRY_LOGIN content="user=" jump-target=CHECK;
 add action=add-src-to-address-list address-list=BLOCKED address-list-timeout=5m chain=CHECK log=yes log-prefix="BLOCK LOGIN USER :" src-address-list=hotspot-login-10;
 :for i from=10 to=1 step=-1 do={add action=add-src-to-address-list address-list="hotspot-login-$i" address-list-timeout=2m chain=CHECK src-address-list=("hotspot-login-".($i-1));};
 add action=add-src-to-address-list address-list=hotspot-login-0 address-list-timeout=1m chain=CHECK;
-add action=add-src-to-address-list address-list=hotspot-login src-address-list=!hotspot-login-5 address-list-timeout=1s chain=CHECK;
+add action=add-src-to-address-list address-list=hotspot-login src-address-list=!hotspot-login-10 address-list-timeout=1s chain=CHECK;
 add action=accept chain=CHECK;
 }
 
